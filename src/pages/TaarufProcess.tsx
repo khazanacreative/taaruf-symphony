@@ -10,8 +10,10 @@ import {
   ChevronRight, 
   UserRound, 
   Check,
-  Send
+  Send,
+  Link
 } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom';
 import TaarufProcessComponent from '@/components/taaruf/TaarufProcess';
 import AppLayout from '@/components/layout/AppLayout';
 
@@ -281,15 +283,13 @@ const TaarufProcess = () => {
               className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90"
               asChild
             >
-              <Link to="/search">
+              <RouterLink to="/search">
                 Cari Calon Pasangan
                 <ChevronRight className="h-4 w-4 ml-1" />
-              </Link>
+              </RouterLink>
             </Button>
           </div>
         )}
-        
-        <TaarufProcessComponent />
       </div>
     </AppLayout>
   );
