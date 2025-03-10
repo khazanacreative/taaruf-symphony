@@ -56,9 +56,7 @@ const Profile = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full mt-4 bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90">
-                  Simpan Perubahan
-                </Button>
+                <Button className="w-full mt-4">Simpan Perubahan</Button>
               </div>
             </div>
           </TabsContent>

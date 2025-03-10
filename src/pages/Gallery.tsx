@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Card, 
@@ -19,8 +18,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import AppLayout from '@/components/layout/AppLayout';
 
 // SVG components for gender-specific icons
 const MaleIcon = () => (
@@ -252,83 +250,77 @@ const Gallery = () => {
   );
   
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="space-y-6">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold">Galeri Peserta Ta'aruf</h1>
-            <p className="text-sm text-foreground/70 mt-2">
-              Lihat ringkasan CV peserta yang telah mendaftar di platform Taaruf Ar Rahman
-            </p>
-          </div>
-          
-          <div className="flex flex-col md:flex-row justify-between gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Cari berdasarkan nama, lokasi, atau pekerjaan..."
-                className="w-full pl-10 pr-4 py-2 border border-input rounded-md"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            
-            <div className="flex gap-2">
-              <Button asChild variant="outline">
-                <Link to="/search">
-                  <Search className="h-4 w-4 mr-2" />
-                  Pencarian Detail
-                </Link>
-              </Button>
-            </div>
-          </div>
-          
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="male">
-                <User className="h-4 w-4 mr-2" />
-                Ikhwan ({filteredMaleProfiles.length})
-              </TabsTrigger>
-              <TabsTrigger value="female">
-                <User className="h-4 w-4 mr-2" />
-                Akhwat ({filteredFemaleProfiles.length})
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="male">
-              {filteredMaleProfiles.length === 0 ? (
-                <div className="text-center py-10 glass-card rounded-xl">
-                  <Users className="mx-auto h-10 w-10 text-foreground/30 mb-3" />
-                  <p className="text-foreground/70">Tidak ada profil ikhwan yang sesuai dengan pencarian Anda</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredMaleProfiles.map(profile => renderProfile(profile, 'male'))}
-                </div>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="female">
-              {filteredFemaleProfiles.length === 0 ? (
-                <div className="text-center py-10 glass-card rounded-xl">
-                  <Users className="mx-auto h-10 w-10 text-foreground/30 mb-3" />
-                  <p className="text-foreground/70">Tidak ada profil akhwat yang sesuai dengan pencarian Anda</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredFemaleProfiles.map(profile => renderProfile(profile, 'female'))}
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
+    <AppLayout>
+      <div className="space-y-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">Galeri Peserta Ta'aruf</h1>
+          <p className="text-sm text-foreground/70 mt-2">
+            Lihat ringkasan CV peserta yang telah mendaftar di platform Taaruf Ar Rahman
+          </p>
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+        
+        <div className="flex flex-col md:flex-row justify-between gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Cari berdasarkan nama, lokasi, atau pekerjaan..."
+              className="w-full pl-10 pr-4 py-2 border border-input rounded-md"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          
+          <div className="flex gap-2">
+            <Button asChild variant="outline">
+              <Link to="/search">
+                <Search className="h-4 w-4 mr-2" />
+                Pencarian Detail
+              </Link>
+            </Button>
+          </div>
+        </div>
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="male">
+              <User className="h-4 w-4 mr-2" />
+              Ikhwan ({filteredMaleProfiles.length})
+            </TabsTrigger>
+            <TabsTrigger value="female">
+              <User className="h-4 w-4 mr-2" />
+              Akhwat ({filteredFemaleProfiles.length})
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="male">
+            {filteredMaleProfiles.length === 0 ? (
+              <div className="text-center py-10 glass-card rounded-xl">
+                <Users className="mx-auto h-10 w-10 text-foreground/30 mb-3" />
+                <p className="text-foreground/70">Tidak ada profil ikhwan yang sesuai dengan pencarian Anda</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredMaleProfiles.map(profile => renderProfile(profile, 'male'))}
+              </div>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="female">
+            {filteredFemaleProfiles.length === 0 ? (
+              <div className="text-center py-10 glass-card rounded-xl">
+                <Users className="mx-auto h-10 w-10 text-foreground/30 mb-3" />
+                <p className="text-foreground/70">Tidak ada profil akhwat yang sesuai dengan pencarian Anda</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredFemaleProfiles.map(profile => renderProfile(profile, 'female'))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
+    </AppLayout>
   );
 };
 

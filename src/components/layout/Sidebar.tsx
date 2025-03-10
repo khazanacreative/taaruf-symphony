@@ -14,19 +14,10 @@ import {
   MessageSquare, 
   CheckCircle, 
   Calendar,
-  BookOpen,
   Users,
   Settings,
   HelpCircle,
-  BarChart,
-  UserCog,
-  FileText,
-  Bell,
-  Clock,
-  DollarSign,
-  Cog,
-  LineChart,
-  History
+  LogOut
 } from 'lucide-react';
 
 type MenuItemType = {
@@ -62,8 +53,7 @@ const participantMenu: MenuSectionType[] = [
   {
     title: "Konten",
     items: [
-      { title: "Galeri CV", icon: Users, path: "/gallery" },
-      { title: "Artikel & Edukasi", icon: BookOpen, path: "/articles" },
+      { title: "Artikel & Edukasi", icon: Users, path: "/articles" },
       { title: "Kisah Sukses", icon: Users, path: "/success-stories" },
     ]
   },
@@ -71,36 +61,6 @@ const participantMenu: MenuSectionType[] = [
     title: "Lainnya",
     items: [
       { title: "Pengaturan", icon: Settings, path: "/settings" },
-      { title: "Bantuan & FAQ", icon: HelpCircle, path: "/help" },
-    ]
-  }
-];
-
-// Define menu items for admin role
-const adminMenu: MenuSectionType[] = [
-  {
-    title: "Admin",
-    items: [
-      { title: "Dashboard Admin", icon: BarChart, path: "/admin/dashboard" },
-      { title: "Manajemen Pengguna", icon: UserCog, path: "/admin/users" },
-      { title: "Manajemen Ta'aruf", icon: Heart, path: "/admin/taaruf" },
-    ]
-  },
-  {
-    title: "Pengelolaan",
-    items: [
-      { title: "Manajemen Konten", icon: FileText, path: "/admin/content" },
-      { title: "Manajemen Komunikasi", icon: Bell, path: "/admin/communications" },
-      { title: "Jadwal & Acara", icon: Clock, path: "/admin/events" },
-      { title: "Pengelolaan Keuangan", icon: DollarSign, path: "/admin/finance" },
-    ]
-  },
-  {
-    title: "Sistem",
-    items: [
-      { title: "Pengaturan Sistem", icon: Cog, path: "/admin/settings" },
-      { title: "Laporan & Analitik", icon: LineChart, path: "/admin/reports" },
-      { title: "Log Aktivitas & Audit", icon: History, path: "/admin/logs" },
     ]
   }
 ];
@@ -128,7 +88,7 @@ const Sidebar = ({ className }: SidebarProps) => {
   }, []);
   
   // Determine which menu to show based on user role
-  const menuSections = userRole === 'admin' ? adminMenu : participantMenu;
+  const menuSections = userRole === 'admin' ? [] : participantMenu;
   
   // Toggle sidebar collapse state
   const toggleSidebar = () => {
@@ -143,7 +103,7 @@ const Sidebar = ({ className }: SidebarProps) => {
         className
       )}
     >
-      <div className="py-4 px-3 flex justify-between items-center">
+      <div className="py-4 px-3 flex justify-between items-center h-[72px]">
         {!isCollapsed && (
           <div className="font-semibold text-lg text-taaruf-blue">Taaruf AR</div>
         )}
@@ -192,32 +152,17 @@ const Sidebar = ({ className }: SidebarProps) => {
         ))}
       </div>
       
-      <Separator />
-      
-      <div className="p-3">
+      <div className="p-3 border-t mt-auto">
         <Button 
           variant="outline" 
           className={cn(
-            "w-full justify-start", 
+            "w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-50", 
             isCollapsed ? "px-2" : ""
           )}
           asChild
         >
           <Link to="/logout">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              className="w-5 h-5"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
+            <LogOut className="w-5 h-5" />
             {!isCollapsed && <span className="ml-2">Keluar</span>}
           </Link>
         </Button>

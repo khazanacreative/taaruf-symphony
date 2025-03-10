@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,8 +14,7 @@ import {
   Star
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import AppLayout from '@/components/layout/AppLayout';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -76,30 +74,27 @@ const Dashboard = () => {
   ];
   
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      
-      <main className="flex-1 container px-4 py-8 mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold">Dashboard</h1>
-            <p className="text-foreground/70">Selamat datang di Taaruf Ar Rahman</p>
-          </div>
-          <div className="mt-4 md:mt-0 flex gap-2">
-            <Button asChild variant="outline">
-              <Link to="/profile">
-                Lengkapi Profil
-              </Link>
-            </Button>
-            <Button asChild className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90">
-              <Link to="/search">
-                Cari Pasangan
-              </Link>
-            </Button>
-          </div>
+    <AppLayout>
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <p className="text-foreground/70">Selamat datang di Taaruf Ar Rahman</p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="mt-4 md:mt-0 flex gap-2">
+          <Button asChild variant="outline">
+            <Link to="/profile">
+              Lengkapi Profil
+            </Link>
+          </Button>
+          <Button asChild className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90">
+            <Link to="/search">
+              Cari Pasangan
+            </Link>
+          </Button>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardContent className="p-4 flex items-center">
               <div className="w-12 h-12 rounded-full bg-taaruf-blue/10 flex items-center justify-center mr-4">
@@ -148,90 +143,89 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
+      
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="grid grid-cols-3 w-full md:w-auto">
+          <TabsTrigger value="overview">Ikhtisar</TabsTrigger>
+          <TabsTrigger value="notifications">
+            Notifikasi
+            <Badge className="ml-2 bg-taaruf-blue" variant="default">{notifications.length}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="events">Agenda</TabsTrigger>
+        </TabsList>
         
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid grid-cols-3 w-full md:w-auto">
-            <TabsTrigger value="overview">Ikhtisar</TabsTrigger>
-            <TabsTrigger value="notifications">
-              Notifikasi
-              <Badge className="ml-2 bg-taaruf-blue" variant="default">{notifications.length}</Badge>
-            </TabsTrigger>
-            <TabsTrigger value="events">Agenda</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Status Ta'aruf</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                        <span className="text-sm">Permintaan Menunggu</span>
-                      </div>
-                      <Badge variant="outline">{stats.pendingRequests}</Badge>
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Status Ta'aruf</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                      <span className="text-sm">Permintaan Menunggu</span>
                     </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-taaruf-blue"></div>
-                        <span className="text-sm">Ta'aruf Aktif</span>
-                      </div>
-                      <Badge variant="outline">{stats.ongoingTaaruf}</Badge>
+                    <Badge variant="outline">{stats.pendingRequests}</Badge>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-taaruf-blue"></div>
+                      <span className="text-sm">Ta'aruf Aktif</span>
                     </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-taaruf-green"></div>
-                        <span className="text-sm">Ta'aruf Selesai</span>
-                      </div>
-                      <Badge variant="outline">{stats.completedTaaruf}</Badge>
+                    <Badge variant="outline">{stats.ongoingTaaruf}</Badge>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-taaruf-green"></div>
+                      <span className="text-sm">Ta'aruf Selesai</span>
                     </div>
-                    
-                    <div className="pt-2">
-                      <Button asChild variant="outline" className="w-full">
-                        <Link to="/taaruf-requests">
-                          Lihat Semua Permintaan
-                          <ChevronRight className="h-4 w-4 ml-1" />
-                        </Link>
-                      </Button>
+                    <Badge variant="outline">{stats.completedTaaruf}</Badge>
+                  </div>
+                  
+                  <div className="pt-2">
+                    <Button asChild variant="outline" className="w-full">
+                      <Link to="/taaruf-requests">
+                        Lihat Semua Permintaan
+                        <ChevronRight className="h-4 w-4 ml-1" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Profil Ta'aruf</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-4">
+                  <div className="flex flex-col">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm">Kelengkapan Profil</span>
+                      <span className="text-sm font-medium">{stats.profileCompletion}%</span>
+                    </div>
+                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-taaruf-blue to-taaruf-green" 
+                        style={{ width: `${stats.profileCompletion}%` }}
+                      ></div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Profil Ta'aruf</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-4">
-                    <div className="flex flex-col">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm">Kelengkapan Profil</span>
-                        <span className="text-sm font-medium">{stats.profileCompletion}%</span>
-                      </div>
-                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-taaruf-blue to-taaruf-green" 
-                          style={{ width: `${stats.profileCompletion}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                    
-                    <div className="pt-2 space-y-3">
-                      <p className="text-sm text-foreground/70">
-                        Profil yang lengkap akan meningkatkan peluang Anda mendapatkan permintaan ta'aruf.
-                      </p>
-                      <Button asChild className="w-full bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90">
-                        <Link to="/profile">
-                          Lengkapi Profil
-                        </Link>
-                      </Button>
-                    </div>
+                  
+                  <div className="pt-2 space-y-3">
+                    <p className="text-sm text-foreground/70">
+                      Profil yang lengkap akan meningkatkan peluang Anda mendapatkan permintaan ta'aruf.
+                    </p>
+                    <Button asChild className="w-full bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90">
+                      <Link to="/profile">
+                        Lengkapi Profil
+                      </Link>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -348,10 +342,7 @@ const Dashboard = () => {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-      
-      <Footer />
-    </div>
+    </AppLayout>
   );
 };
 
