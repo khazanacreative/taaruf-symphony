@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -142,7 +143,7 @@ const Dashboard = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+      </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid grid-cols-3 w-full md:w-auto">
@@ -227,121 +228,122 @@ const Dashboard = () => {
                       </Link>
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Aktivitas Terbaru</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                {notifications.length > 0 ? (
-                  <div className="space-y-4">
-                    {notifications.slice(0, 3).map((notification) => (
-                      <div key={notification.id} className="flex items-start gap-3 pb-3 border-b border-gray-100">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center 
-                          ${notification.type === 'request' ? 'bg-taaruf-blue/10' : 
-                            notification.type === 'message' ? 'bg-taaruf-green/10' : 
-                            notification.type === 'system' ? 'bg-yellow-100' : 'bg-purple-100'}`}>
-                          {notification.type === 'request' ? (
-                            <Heart className="h-4 w-4 text-taaruf-blue" />
-                          ) : notification.type === 'message' ? (
-                            <MessageSquare className="h-4 w-4 text-taaruf-green" />
-                          ) : notification.type === 'system' ? (
-                            <Bell className="h-4 w-4 text-yellow-600" />
-                          ) : (
-                            <Calendar className="h-4 w-4 text-purple-600" />
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm">{notification.message}</p>
-                          <p className="text-xs text-foreground/60">{notification.time}</p>
-                        </div>
-                      </div>
-                    ))}
-                    
-                    <Button variant="link" className="p-0 h-auto" onClick={() => setActiveTab('notifications')}>
-                      Lihat semua notifikasi
-                    </Button>
-                  </div>
-                ) : (
-                  <p className="text-sm text-foreground/70">Belum ada aktivitas terbaru.</p>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="notifications" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Semua Notifikasi</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                {notifications.length > 0 ? (
-                  <div className="space-y-4">
-                    {notifications.map((notification) => (
-                      <div key={notification.id} className="flex items-start gap-3 pb-4 border-b border-gray-100">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center 
-                          ${notification.type === 'request' ? 'bg-taaruf-blue/10' : 
-                            notification.type === 'message' ? 'bg-taaruf-green/10' : 
-                            notification.type === 'system' ? 'bg-yellow-100' : 'bg-purple-100'}`}>
-                          {notification.type === 'request' ? (
-                            <Heart className="h-4 w-4 text-taaruf-blue" />
-                          ) : notification.type === 'message' ? (
-                            <MessageSquare className="h-4 w-4 text-taaruf-green" />
-                          ) : notification.type === 'system' ? (
-                            <Bell className="h-4 w-4 text-yellow-600" />
-                          ) : (
-                            <Calendar className="h-4 w-4 text-purple-600" />
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm">{notification.message}</p>
-                          <p className="text-xs text-foreground/60">{notification.time}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm text-foreground/70">Belum ada notifikasi.</p>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="events" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Agenda Mendatang</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                {events.length > 0 ? (
-                  <div className="space-y-4">
-                    {events.map((event) => (
-                      <div key={event.id} className="border rounded-lg p-4">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Calendar className="h-5 w-5 text-taaruf-blue" />
-                          <h4 className="font-medium">{event.title}</h4>
-                        </div>
-                        <p className="text-sm text-foreground/70 mb-2">{event.date}</p>
-                        <p className="text-sm">{event.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm text-foreground/70">Belum ada agenda mendatang.</p>
-                )}
-                
-                <div className="mt-4">
-                  <Button variant="outline" className="w-full">
-                    Tambah Agenda
-                  </Button>
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </div>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Aktivitas Terbaru</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              {notifications.length > 0 ? (
+                <div className="space-y-4">
+                  {notifications.slice(0, 3).map((notification) => (
+                    <div key={notification.id} className="flex items-start gap-3 pb-3 border-b border-gray-100">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center 
+                        ${notification.type === 'request' ? 'bg-taaruf-blue/10' : 
+                          notification.type === 'message' ? 'bg-taaruf-green/10' : 
+                          notification.type === 'system' ? 'bg-yellow-100' : 'bg-purple-100'}`}>
+                        {notification.type === 'request' ? (
+                          <Heart className="h-4 w-4 text-taaruf-blue" />
+                        ) : notification.type === 'message' ? (
+                          <MessageSquare className="h-4 w-4 text-taaruf-green" />
+                        ) : notification.type === 'system' ? (
+                          <Bell className="h-4 w-4 text-yellow-600" />
+                        ) : (
+                          <Calendar className="h-4 w-4 text-purple-600" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm">{notification.message}</p>
+                        <p className="text-xs text-foreground/60">{notification.time}</p>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <Button variant="link" className="p-0 h-auto" onClick={() => setActiveTab('notifications')}>
+                    Lihat semua notifikasi
+                  </Button>
+                </div>
+              ) : (
+                <p className="text-sm text-foreground/70">Belum ada aktivitas terbaru.</p>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="notifications" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Semua Notifikasi</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              {notifications.length > 0 ? (
+                <div className="space-y-4">
+                  {notifications.map((notification) => (
+                    <div key={notification.id} className="flex items-start gap-3 pb-4 border-b border-gray-100">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center 
+                        ${notification.type === 'request' ? 'bg-taaruf-blue/10' : 
+                          notification.type === 'message' ? 'bg-taaruf-green/10' : 
+                          notification.type === 'system' ? 'bg-yellow-100' : 'bg-purple-100'}`}>
+                        {notification.type === 'request' ? (
+                          <Heart className="h-4 w-4 text-taaruf-blue" />
+                        ) : notification.type === 'message' ? (
+                          <MessageSquare className="h-4 w-4 text-taaruf-green" />
+                        ) : notification.type === 'system' ? (
+                          <Bell className="h-4 w-4 text-yellow-600" />
+                        ) : (
+                          <Calendar className="h-4 w-4 text-purple-600" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm">{notification.message}</p>
+                        <p className="text-xs text-foreground/60">{notification.time}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-foreground/70">Belum ada notifikasi.</p>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="events" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Agenda Mendatang</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              {events.length > 0 ? (
+                <div className="space-y-4">
+                  {events.map((event) => (
+                    <div key={event.id} className="border rounded-lg p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Calendar className="h-5 w-5 text-taaruf-blue" />
+                        <h4 className="font-medium">{event.title}</h4>
+                      </div>
+                      <p className="text-sm text-foreground/70 mb-2">{event.date}</p>
+                      <p className="text-sm">{event.description}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-foreground/70">Belum ada agenda mendatang.</p>
+              )}
+              
+              <div className="mt-4">
+                <Button variant="outline" className="w-full">
+                  Tambah Agenda
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </AppLayout>
   );
 };
