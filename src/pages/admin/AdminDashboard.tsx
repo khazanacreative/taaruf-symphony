@@ -1,5 +1,5 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -21,6 +21,26 @@ import AppLayout from '@/components/layout/AppLayout';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState('');
+  
+  useEffect(() => {
+    const authData = localStorage.getItem('taaruf_auth');
+    if (authData) {
+      const { isAuthenticated, role } = JSON.parse(authData);
+      setIsAuthenticated(isAuthenticated);
+      setUserRole(role);
+    }
+  }, []);
+  
+  // Redirect to login if not authenticated or if not admin
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  
+  if (userRole !== 'admin') {
+    return <Navigate to="/dashboard" />;
+  }
   
   // Mock data for admin dashboard
   const stats = {

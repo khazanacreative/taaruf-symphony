@@ -1,275 +1,200 @@
 
-import { useState } from 'react';
-import AppLayout from '@/components/layout/AppLayout';
+import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, Download, AlertTriangle, Info, CheckCircle, XCircle } from 'lucide-react';
-
-// Sample log data
-const logData = [
-  { 
-    id: '1001', 
-    timestamp: '2023-06-10 08:15:22', 
-    user: 'ahmad@example.com', 
-    action: 'Login', 
-    status: 'success', 
-    details: 'Successful login from IP 192.168.1.1' 
-  },
-  { 
-    id: '1002', 
-    timestamp: '2023-06-10 09:30:45', 
-    user: 'fatimah@example.com', 
-    action: 'Profile Update', 
-    status: 'success', 
-    details: 'Updated profile information' 
-  },
-  { 
-    id: '1003', 
-    timestamp: '2023-06-10 10:12:33', 
-    user: 'umar@example.com', 
-    action: 'Ta\'aruf Request', 
-    status: 'success', 
-    details: 'Sent ta\'aruf request to aisyah@example.com' 
-  },
-  { 
-    id: '1004', 
-    timestamp: '2023-06-10 11:45:01', 
-    user: 'system', 
-    action: 'Backup', 
-    status: 'success', 
-    details: 'Automated system backup completed' 
-  },
-  { 
-    id: '1005', 
-    timestamp: '2023-06-10 13:22:19', 
-    user: 'hasan@example.com', 
-    action: 'Login', 
-    status: 'error', 
-    details: 'Failed login attempt from IP 203.0.113.4 (5th attempt)' 
-  },
-  { 
-    id: '1006', 
-    timestamp: '2023-06-10 14:05:37', 
-    user: 'admin@taarufarrahman.com', 
-    action: 'User Suspend', 
-    status: 'warning', 
-    details: 'Temporarily suspended user khalid@example.com for violation of terms' 
-  },
-  { 
-    id: '1007', 
-    timestamp: '2023-06-10 15:30:42', 
-    user: 'zainab@example.com', 
-    action: 'Document Upload', 
-    status: 'info', 
-    details: 'Uploaded verification documents' 
-  },
-  { 
-    id: '1008', 
-    timestamp: '2023-06-10 16:45:09', 
-    user: 'ali@example.com', 
-    action: 'Payment', 
-    status: 'success', 
-    details: 'Completed premium subscription payment' 
-  },
-  { 
-    id: '1009', 
-    timestamp: '2023-06-10 17:12:25', 
-    user: 'system', 
-    action: 'Maintenance', 
-    status: 'info', 
-    details: 'Started scheduled system maintenance' 
-  },
-  { 
-    id: '1010', 
-    timestamp: '2023-06-10 18:30:15', 
-    user: 'admin@taarufarrahman.com', 
-    action: 'Configuration', 
-    status: 'warning', 
-    details: 'Changed system email template configuration' 
-  },
-];
+import { 
+  Clock, 
+  Search, 
+  Download, 
+  Filter, 
+  AlertTriangle,
+  InfoIcon,
+  CheckCircle,
+  XCircle
+} from 'lucide-react';
+import AppLayout from '@/components/layout/AppLayout';
 
 const AdminLogs = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [logType, setLogType] = useState('all');
-  const [timeFrame, setTimeFrame] = useState('today');
-
-  // Filter logs based on search term and filters
-  const filteredLogs = logData.filter(log => {
-    return (
-      (log.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       log.details.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (logType === 'all' || log.status === logType) 
-    );
-  });
-
-  // Status badge component
-  const StatusBadge = ({ status }: { status: string }) => {
-    switch (status) {
-      case 'success':
-        return <Badge className="bg-green-500"><CheckCircle className="w-3 h-3 mr-1" /> Success</Badge>;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState('');
+  
+  useEffect(() => {
+    const authData = localStorage.getItem('taaruf_auth');
+    if (authData) {
+      const { isAuthenticated, role } = JSON.parse(authData);
+      setIsAuthenticated(isAuthenticated);
+      setUserRole(role);
+    }
+  }, []);
+  
+  // Redirect to login if not authenticated or if not admin
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  
+  if (userRole !== 'admin') {
+    return <Navigate to="/dashboard" />;
+  }
+  
+  // Mock data for system logs
+  const logs = [
+    {
+      id: 1,
+      timestamp: '2023-08-15 08:24:11',
+      level: 'info',
+      user: 'admin',
+      action: 'User login successful',
+      ip: '192.168.1.1'
+    },
+    {
+      id: 2,
+      timestamp: '2023-08-15 07:15:23',
+      level: 'warning',
+      user: 'system',
+      action: 'High CPU usage detected',
+      ip: 'internal'
+    },
+    {
+      id: 3,
+      timestamp: '2023-08-14 23:11:45',
+      level: 'error',
+      user: 'system',
+      action: 'Database connection failed',
+      ip: 'internal'
+    },
+    {
+      id: 4,
+      timestamp: '2023-08-14 22:05:33',
+      level: 'info',
+      user: 'ahmad',
+      action: 'Profile updated',
+      ip: '192.168.1.5'
+    },
+    {
+      id: 5,
+      timestamp: '2023-08-14 21:55:27',
+      level: 'info',
+      user: 'fatimah',
+      action: 'New taaruf request sent',
+      ip: '192.168.1.10'
+    },
+    {
+      id: 6,
+      timestamp: '2023-08-14 18:30:12',
+      level: 'warning',
+      user: 'system',
+      action: 'Low disk space warning',
+      ip: 'internal'
+    },
+    {
+      id: 7,
+      timestamp: '2023-08-14 15:45:09',
+      level: 'info',
+      user: 'admin',
+      action: 'User account deactivated',
+      ip: '192.168.1.1'
+    }
+  ];
+  
+  // Function to render log level icon
+  const getLevelIcon = (level: string) => {
+    switch (level) {
       case 'error':
-        return <Badge className="bg-red-500"><XCircle className="w-3 h-3 mr-1" /> Error</Badge>;
+        return <XCircle className="h-5 w-5 text-red-500" />;
       case 'warning':
-        return <Badge className="bg-yellow-500"><AlertTriangle className="w-3 h-3 mr-1" /> Warning</Badge>;
+        return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
       case 'info':
-        return <Badge className="bg-blue-500"><Info className="w-3 h-3 mr-1" /> Info</Badge>;
       default:
-        return <Badge>{status}</Badge>;
+        return <InfoIcon className="h-5 w-5 text-blue-500" />;
     }
   };
-
+  
   return (
     <AppLayout>
-      <div className="container mx-auto py-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">System Logs</h1>
-          <Button variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
-            Export Logs
-          </Button>
+      <div className="space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold">Log Aktivitas Sistem</h1>
+            <p className="text-muted-foreground">
+              Pantau aktivitas dan peristiwa sistem
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button variant="outline" size="sm">
+              <Filter className="h-4 w-4 mr-2" />
+              Filter
+            </Button>
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Ekspor Log
+            </Button>
+          </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Total Logs</CardTitle>
-              <CardDescription>All system logs</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{logData.length}</p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Success</CardTitle>
-              <CardDescription>Successful operations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-green-600">
-                {logData.filter(log => log.status === 'success').length}
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Errors</CardTitle>
-              <CardDescription>Failed operations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-red-600">
-                {logData.filter(log => log.status === 'error').length}
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Warnings</CardTitle>
-              <CardDescription>Potential issues</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-yellow-600">
-                {logData.filter(log => log.status === 'warning').length}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>System Activity Logs</CardTitle>
-            <CardDescription>
-              View and filter all system activities and events
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <div className="flex-1 relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search logs..."
-                  className="pl-8"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+        
+        <Card className="shadow-sm">
+          <CardHeader className="pb-3">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-lg">Log Aktivitas Terbaru</CardTitle>
+              <div className="w-full max-w-sm flex items-center relative">
+                <Search className="h-4 w-4 absolute left-3 text-muted-foreground" />
+                <Input 
+                  placeholder="Cari log..." 
+                  className="pl-9"
                 />
               </div>
-              
-              <Select value={logType} onValueChange={setLogType}>
-                <SelectTrigger className="w-full md:w-[180px]">
-                  <SelectValue placeholder="Log Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="success">Success</SelectItem>
-                  <SelectItem value="error">Error</SelectItem>
-                  <SelectItem value="warning">Warning</SelectItem>
-                  <SelectItem value="info">Information</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Select value={timeFrame} onValueChange={setTimeFrame}>
-                <SelectTrigger className="w-full md:w-[180px]">
-                  <SelectValue placeholder="Time Frame" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="yesterday">Yesterday</SelectItem>
-                  <SelectItem value="week">This Week</SelectItem>
-                  <SelectItem value="month">This Month</SelectItem>
-                  <SelectItem value="custom">Custom Range</SelectItem>
-                </SelectContent>
-              </Select>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-muted/50 border-b">
+                      <th className="py-3 px-4 text-left font-medium">Waktu</th>
+                      <th className="py-3 px-4 text-left font-medium">Level</th>
+                      <th className="py-3 px-4 text-left font-medium">Pengguna</th>
+                      <th className="py-3 px-4 text-left font-medium">Aktivitas</th>
+                      <th className="py-3 px-4 text-left font-medium">IP</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {logs.map((log) => (
+                      <tr key={log.id} className="border-b last:border-b-0 hover:bg-muted/30">
+                        <td className="py-3 px-4 flex items-center">
+                          <Clock className="h-4 w-4 text-muted-foreground mr-2" />
+                          {log.timestamp}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className="flex items-center">
+                            {getLevelIcon(log.level)}
+                            <span className="ml-2 capitalize">{log.level}</span>
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">{log.user}</td>
+                        <td className="py-3 px-4">{log.action}</td>
+                        <td className="py-3 px-4">{log.ip}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
             
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">ID</TableHead>
-                    <TableHead className="w-[180px]">Timestamp</TableHead>
-                    <TableHead className="w-[180px]">User</TableHead>
-                    <TableHead className="w-[150px]">Action</TableHead>
-                    <TableHead className="w-[120px]">Status</TableHead>
-                    <TableHead>Details</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredLogs.length > 0 ? (
-                    filteredLogs.map((log) => (
-                      <TableRow key={log.id}>
-                        <TableCell className="font-mono text-xs">{log.id}</TableCell>
-                        <TableCell>{log.timestamp}</TableCell>
-                        <TableCell>{log.user}</TableCell>
-                        <TableCell>{log.action}</TableCell>
-                        <TableCell>
-                          <StatusBadge status={log.status} />
-                        </TableCell>
-                        <TableCell className="max-w-md truncate">{log.details}</TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={6} className="h-24 text-center">
-                        No logs found matching the current filters.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+            <div className="flex items-center justify-between mt-4">
+              <div className="text-sm text-muted-foreground">
+                Menampilkan 1-7 dari 120 log
+              </div>
+              <div className="flex gap-1">
+                <Button variant="outline" size="sm" disabled>
+                  Sebelumnya
+                </Button>
+                <Button variant="outline" size="sm">
+                  Selanjutnya
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

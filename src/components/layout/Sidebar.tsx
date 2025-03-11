@@ -17,7 +17,14 @@ import {
   Users,
   Settings,
   HelpCircle,
-  LogOut
+  LogOut,
+  FileText,
+  BarChart,
+  Mail,
+  Award,
+  DollarSign,
+  AlertCircle,
+  Clock
 } from 'lucide-react';
 
 type MenuItemType = {
@@ -53,14 +60,43 @@ const participantMenu: MenuSectionType[] = [
   {
     title: "Konten",
     items: [
-      { title: "Artikel & Edukasi", icon: Users, path: "/articles" },
-      { title: "Kisah Sukses", icon: Users, path: "/success-stories" },
+      { title: "Artikel & Edukasi", icon: FileText, path: "/articles" },
+      { title: "Kisah Sukses", icon: Award, path: "/success-stories" },
     ]
   },
   {
     title: "Lainnya",
     items: [
       { title: "Pengaturan", icon: Settings, path: "/settings" },
+    ]
+  }
+];
+
+// Define menu items for admin role
+const adminMenu: MenuSectionType[] = [
+  {
+    title: "Utama",
+    items: [
+      { title: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
+      { title: "Pengguna", icon: Users, path: "/admin/users" },
+      { title: "Proses Ta'aruf", icon: Heart, path: "/admin/taaruf" },
+    ]
+  },
+  {
+    title: "Pengelolaan",
+    items: [
+      { title: "Konten", icon: FileText, path: "/admin/content" },
+      { title: "Komunikasi", icon: Mail, path: "/admin/communications" },
+      { title: "Acara", icon: Calendar, path: "/admin/events" },
+      { title: "Keuangan", icon: DollarSign, path: "/admin/finance" },
+    ]
+  },
+  {
+    title: "Lainnya",
+    items: [
+      { title: "Pengaturan Admin", icon: Settings, path: "/admin/settings" },
+      { title: "Laporan", icon: BarChart, path: "/admin/reports" },
+      { title: "Log Aktivitas", icon: Clock, path: "/admin/logs" },
     ]
   }
 ];
@@ -88,7 +124,7 @@ const Sidebar = ({ className }: SidebarProps) => {
   }, []);
   
   // Determine which menu to show based on user role
-  const menuSections = userRole === 'admin' ? [] : participantMenu;
+  const menuSections = userRole === 'admin' ? adminMenu : participantMenu;
   
   // Toggle sidebar collapse state
   const toggleSidebar = () => {

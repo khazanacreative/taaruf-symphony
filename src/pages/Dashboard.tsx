@@ -1,5 +1,6 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,6 +20,20 @@ import AppLayout from '@/components/layout/AppLayout';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  useEffect(() => {
+    const authData = localStorage.getItem('taaruf_auth');
+    if (authData) {
+      const { isAuthenticated } = JSON.parse(authData);
+      setIsAuthenticated(isAuthenticated);
+    }
+  }, []);
+  
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
   
   // Mock data for dashboard statistics
   const stats = {
