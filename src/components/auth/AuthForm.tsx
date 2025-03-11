@@ -61,26 +61,68 @@ const AuthForm = ({ type }: AuthFormProps) => {
     
     // Simulasi request ke server
     setTimeout(() => {
-      // Set auth data in localStorage (in a real app, this would come from the server)
-      localStorage.setItem('taaruf_auth', JSON.stringify({
-        isAuthenticated: true,
-        user: {
-          name: type === 'register' ? formData.name : 'User',
-          email: formData.email,
-          gender: formData.gender
-        },
-        token: 'dummy-token-' + Math.random()
-      }));
+      // Check if logging in with demo admin account
+      const isAdmin = formData.email === 'admin@example.com' && formData.password === 'admin';
       
-      toast({
-        title: type === 'login' ? "Login berhasil" : "Pendaftaran berhasil",
-        description: type === 'login' 
-          ? "Selamat datang kembali di Taaruf Ar Rahman." 
-          : "Akun Anda telah dibuat. Silakan lengkapi profil Anda.",
-      });
+      // Check if logging in with demo user account
+      const isUser = formData.email === 'user@example.com' && formData.password === 'password';
       
-      // Redirect ke dashboard
-      navigate('/dashboard');
+      if (type === 'login' && !isAdmin && !isUser && formData.email && formData.password) {
+        // For demo purposes - any email/password works for regular user
+        isUser = true;
+      }
+      
+      if (type === 'login' && (isAdmin || isUser)) {
+        // Set auth data in localStorage with appropriate role
+        localStorage.setItem('taaruf_auth', JSON.stringify({
+          isAuthenticated: true,
+          user: {
+            name: isAdmin ? 'Admin' : (type === 'register' ? formData.name : 'User'),
+            email: formData.email,
+            gender: formData.gender
+          },
+          role: isAdmin ? 'admin' : 'user',
+          token: 'dummy-token-' + Math.random()
+        }));
+        
+        toast({
+          title: "Login berhasil",
+          description: `Selamat datang kembali di Taaruf Ar Rahman${isAdmin ? ' sebagai Admin' : ''}.`
+        });
+        
+        // Redirect based on role
+        if (isAdmin) {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
+      } else if (type === 'register') {
+        // Handle registration
+        localStorage.setItem('taaruf_auth', JSON.stringify({
+          isAuthenticated: true,
+          user: {
+            name: formData.name,
+            email: formData.email,
+            gender: formData.gender
+          },
+          role: 'user',
+          token: 'dummy-token-' + Math.random()
+        }));
+        
+        toast({
+          title: "Pendaftaran berhasil",
+          description: "Akun Anda telah dibuat. Silakan lengkapi profil Anda."
+        });
+        
+        navigate('/dashboard');
+      } else {
+        // Login failed
+        toast({
+          title: "Login gagal",
+          description: "Email atau kata sandi tidak valid.",
+          variant: "destructive"
+        });
+      }
       
       setIsLoading(false);
     }, 1500);
