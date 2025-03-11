@@ -1,5 +1,5 @@
-
-import { Link, Navigate } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AuthForm from '@/components/auth/AuthForm';
 import Header from '@/components/layout/Header';
@@ -8,20 +8,21 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { UserCircle, UserCog } from 'lucide-react';
 
 const Login = () => {
-  // Check if user is already logged in
-  const authData = localStorage.getItem('taaruf_auth');
-  const isAuthenticated = authData ? JSON.parse(authData).isAuthenticated : false;
-
-  // If already authenticated, redirect to dashboard
-  if (isAuthenticated) {
-    // Get user role from local storage
-    const { role } = JSON.parse(authData);
-    // Redirect admin to admin dashboard
-    if (role === 'admin') {
-      return <Navigate to="/admin/dashboard" replace />;
+  // Parse localStorage safely
+  const authData = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem('taaruf_auth') || '{}');
+    } catch {
+      return {};
     }
-    // Redirect regular users to user dashboard
-    return <Navigate to="/dashboard" replace />;
+  }, []);
+
+  const isAuthenticated = authData?.isAuthenticated ?? false;
+  const role = authData?.role ?? '';
+
+  // If already authenticated, redirect to appropriate dashboard
+  if (isAuthenticated) {
+    return <Navigate to={role === 'admin' ? "/admin/dashboard" : "/dashboard"} replace />;
   }
 
   return (
