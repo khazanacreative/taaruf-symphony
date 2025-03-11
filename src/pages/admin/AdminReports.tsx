@@ -304,7 +304,7 @@ const AdminReports = () => {
                 </div>
                 <div className="mt-4 space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">< 1 bulan</span>
+                    <span className="text-sm">{"< 1 bulan"}</span>
                     <span className="text-sm font-medium">15%</span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -316,7 +316,7 @@ const AdminReports = () => {
                     <span className="text-sm font-medium">30%</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">> 6 bulan</span>
+                    <span className="text-sm">{"> 6 bulan"}</span>
                     <span className="text-sm font-medium">10%</span>
                   </div>
                 </div>
