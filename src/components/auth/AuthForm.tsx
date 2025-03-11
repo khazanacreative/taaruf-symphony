@@ -65,7 +65,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       const isAdmin = formData.email === 'admin@example.com' && formData.password === 'admin';
       
       // Check if logging in with demo user account
-      const isUser = formData.email === 'user@example.com' && formData.password === 'password';
+      let isUser = formData.email === 'user@example.com' && formData.password === 'password';
       
       if (type === 'login' && !isAdmin && !isUser && formData.email && formData.password) {
         // For demo purposes - any email/password works for regular user
@@ -77,7 +77,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
         localStorage.setItem('taaruf_auth', JSON.stringify({
           isAuthenticated: true,
           user: {
-            name: isAdmin ? 'Admin' : (type === 'register' ? formData.name : 'User'),
+            name: isAdmin ? 'Admin' : 'User',
             email: formData.email,
             gender: formData.gender
           },
