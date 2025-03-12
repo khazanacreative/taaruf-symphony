@@ -24,6 +24,7 @@ import Meetings from "./pages/Meetings";
 import Articles from "./pages/Articles";
 import SuccessStories from "./pages/SuccessStories";
 import Settings from "./pages/Settings";
+import CVGallery from "./pages/CVGallery";
 
 // Admin pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -36,6 +37,7 @@ import AdminFinance from "./pages/admin/AdminFinance";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminLogs from "./pages/admin/AdminLogs";
+import AdminCVGallery from "./pages/admin/AdminCVGallery";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +63,7 @@ const App = () => (
           <Route path="/approvals" element={<Approvals />} />
           <Route path="/meetings" element={<Meetings />} />
           <Route path="/articles" element={<Articles />} />
+          <Route path="/cv-gallery" element={<CVGallery />} />
           <Route path="/success-stories" element={<SuccessStories />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/about" element={<About />} />
@@ -71,6 +74,7 @@ const App = () => (
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/taaruf" element={<AdminTaaruf />} />
           <Route path="/admin/content" element={<AdminContent />} />
+          <Route path="/admin/cv-gallery" element={<AdminCVGallery />} />
           <Route path="/admin/communications" element={<AdminCommunications />} />
           <Route path="/admin/events" element={<AdminEvents />} />
           <Route path="/admin/finance" element={<AdminFinance />} />

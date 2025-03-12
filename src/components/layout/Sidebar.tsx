@@ -24,7 +24,8 @@ import {
   Award,
   DollarSign,
   AlertCircle,
-  Clock
+  Clock,
+  FolderOpen
 } from 'lucide-react';
 
 type MenuItemType = {
@@ -61,6 +62,7 @@ const participantMenu: MenuSectionType[] = [
     title: "Konten",
     items: [
       { title: "Artikel & Edukasi", icon: FileText, path: "/articles" },
+      { title: "Galeri CV", icon: FolderOpen, path: "/cv-gallery" },
       { title: "Kisah Sukses", icon: Award, path: "/success-stories" },
     ]
   },
@@ -86,6 +88,7 @@ const adminMenu: MenuSectionType[] = [
     title: "Pengelolaan",
     items: [
       { title: "Konten", icon: FileText, path: "/admin/content" },
+      { title: "Galeri CV", icon: FolderOpen, path: "/admin/cv-gallery" },
       { title: "Komunikasi", icon: Mail, path: "/admin/communications" },
       { title: "Acara", icon: Calendar, path: "/admin/events" },
       { title: "Keuangan", icon: DollarSign, path: "/admin/finance" },
