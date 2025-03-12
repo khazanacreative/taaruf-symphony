@@ -1,4 +1,3 @@
-
 import { Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { User, Mail, Shield, Calendar } from 'lucide-react';
 import CVForm from '@/components/profile/CVForm';
 import AppLayout from '@/components/layout/AppLayout';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { isAuthenticated, userRole, isLoading } = useAdminAuth();
@@ -21,7 +21,6 @@ const Profile = () => {
     role: ''
   });
   
-  // Load user data from localStorage
   useEffect(() => {
     const authData = localStorage.getItem('taaruf_auth');
     if (authData) {
@@ -40,12 +39,10 @@ const Profile = () => {
     }
   }, []);
   
-  // Show loading indicator while checking auth
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
   
-  // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }

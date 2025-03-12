@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { 
   Card, 
@@ -14,11 +15,17 @@ import {
   GraduationCap, 
   Briefcase, 
   MapPin,
-  Book
+  Book,
+  MessageSquare,
+  Calendar,
+  Check,
+  Clock,
+  CheckCircle
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/components/layout/AppLayout';
+import TaarufProcessComponent from '@/components/taaruf/TaarufProcess';
 
 // SVG components for gender-specific icons
 const MaleIcon = () => (
@@ -257,6 +264,12 @@ const Gallery = () => {
           <p className="text-sm text-foreground/70 mt-2">
             Lihat ringkasan CV peserta yang telah mendaftar di platform Taaruf Ar Rahman
           </p>
+        </div>
+        
+        {/* Taaruf Process Component at the top */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Alur Proses Ta'aruf</h2>
+          <TaarufProcessComponent />
         </div>
         
         <div className="flex flex-col md:flex-row justify-between gap-4">

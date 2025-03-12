@@ -1,27 +1,38 @@
 
 import { useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, LayoutDashboard } from 'lucide-react';
+import { User, LayoutDashboard, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 interface HeaderProps {
   className?: string;
 }
 
 const Header = ({ className }: HeaderProps) => {
-  const { isAuthenticated, isAdmin } = useAdminAuth();
+  const { isAuthenticated, isAdmin, userRole } = useAdminAuth();
   const navigate = useNavigate();
   
-  const handleDashboardClick = useCallback((e: React.MouseEvent) => {
-    if (!isAuthenticated) {
-      e.preventDefault();
-      navigate('/login');
+  // Get user name from localStorage if authenticated
+  const userName = useMemo(() => {
+    if (!isAuthenticated) return null;
+    
+    try {
+      const authData = localStorage.getItem('taaruf_auth');
+      if (authData) {
+        const { user } = JSON.parse(authData);
+        return user?.name || (isAdmin ? 'Admin' : 'User');
+      }
+    } catch (error) {
+      console.error('Error parsing auth data:', error);
     }
-  }, [isAuthenticated, navigate]);
+    
+    return isAdmin ? 'Admin' : 'User';
+  }, [isAuthenticated, isAdmin]);
   
-  const handleProfileClick = useCallback((e: React.MouseEvent) => {
+  const handleDashboardClick = useCallback((e: React.MouseEvent) => {
     if (!isAuthenticated) {
       e.preventDefault();
       navigate('/login');
@@ -42,18 +53,49 @@ const Header = ({ className }: HeaderProps) => {
       </Link>
       
       <div className="flex items-center gap-2">
-        <Button asChild variant="ghost" size="sm" onClick={handleDashboardClick}>
-          <Link to={dashboardLink}>
-            <LayoutDashboard className="h-4 w-4 mr-2" />
-            Dashboard
-          </Link>
-        </Button>
-        <Button asChild variant="ghost" size="sm" onClick={handleProfileClick}>
-          <Link to="/profile">
-            <User className="h-4 w-4 mr-2" />
-            Profil
-          </Link>
-        </Button>
+        {isAuthenticated ? (
+          <>
+            <Button asChild variant="ghost" size="sm" onClick={handleDashboardClick}>
+              <Link to={dashboardLink}>
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                Dashboard
+              </Link>
+            </Button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <User className="h-4 w-4" />
+                  {userName}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{isAdmin ? 'Admin' : 'Akun Saya'}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/profile">Profil Saya</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/settings">Pengaturan</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/logout" className="text-red-500 flex items-center gap-2">
+                    <LogOut className="h-4 w-4" />
+                    Keluar
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        ) : (
+          <Button asChild size="sm" className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white">
+            <Link to="/login">
+              <LogIn className="h-4 w-4 mr-2" />
+              Masuk
+            </Link>
+          </Button>
+        )}
       </div>
     </header>
   );

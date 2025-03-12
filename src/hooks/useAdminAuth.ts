@@ -15,7 +15,7 @@ export const useAdminAuth = () => {
       try {
         const parsedData = JSON.parse(authData);
         return {
-          isAuthenticated: parsedData.isAuthenticated || false,
+          isAuthenticated: Boolean(parsedData.isAuthenticated),
           userRole: parsedData.role || '',
           isLoading: false,
           isAdmin: (parsedData.role || '') === 'admin'
@@ -41,10 +41,14 @@ export const useAdminAuth = () => {
     }
   }, []);
   
-  useEffect(() => {
+  const refresh = useCallback(() => {
     const authData = getAuthData();
     setState(authData);
   }, [getAuthData]);
+  
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
   
   // Memoize common derived values
   const isParticipant = useMemo(() => 
@@ -55,9 +59,6 @@ export const useAdminAuth = () => {
   return {
     ...state,
     isParticipant,
-    refresh: useCallback(() => {
-      const authData = getAuthData();
-      setState(authData);
-    }, [getAuthData])
+    refresh
   };
 };
