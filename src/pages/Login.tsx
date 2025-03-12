@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AuthForm from '@/components/auth/AuthForm';
@@ -8,16 +9,34 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { UserCircle, UserCog } from 'lucide-react';
 
 const Login = () => {
-  // Check if user is already logged in
-  const authData = localStorage.getItem('taaruf_auth');
-  const isAuthenticated = authData ? JSON.parse(authData).isAuthenticated : false;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    const authData = localStorage.getItem('taaruf_auth');
+    if (authData) {
+      try {
+        const parsedData = JSON.parse(authData);
+        setIsAuthenticated(parsedData.isAuthenticated || false);
+        setUserRole(parsedData.role || '');
+      } catch (error) {
+        console.error('Error parsing auth data:', error);
+        localStorage.removeItem('taaruf_auth');
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  // Show loading state
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
 
   // If already authenticated, redirect to dashboard
   if (isAuthenticated) {
-    // Get user role from local storage
-    const { role } = JSON.parse(authData);
     // Redirect admin to admin dashboard
-    if (role === 'admin') {
+    if (userRole === 'admin') {
       return <Navigate to="/admin/dashboard" replace />;
     }
     // Redirect regular users to user dashboard
