@@ -61,7 +61,6 @@ const participantMenu: MenuSectionType[] = [
   {
     title: "Konten",
     items: [
-      { title: "Galeri CV", icon: FolderOpen, path: "/cv-gallery" },
       { title: "Artikel & Edukasi", icon: FileText, path: "/articles" },
       { title: "Kisah Sukses", icon: Award, path: "/success-stories" },
     ]
