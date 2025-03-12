@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Card, 
@@ -17,13 +16,14 @@ import {
   Briefcase, 
   MapPin,
   Book,
-  Eye
+  Eye,
+  MessageSquare,
+  CheckCircle
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AppLayout from '@/components/layout/AppLayout';
 import TaarufProcessComponent from '@/components/taaruf/TaarufProcess';
 
-// SVG components for gender-specific icons
 const MaleIcon = () => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
@@ -46,7 +46,6 @@ const FemaleIcon = () => (
   </svg>
 );
 
-// Mock data for gallery profiles with taaruf status
 const maleProfiles = [
   {
     id: 1,
