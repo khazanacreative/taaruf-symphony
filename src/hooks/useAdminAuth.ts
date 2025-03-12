@@ -42,14 +42,8 @@ export const useAdminAuth = () => {
   }, []);
   
   useEffect(() => {
-    // Use a small timeout to ensure this happens after initial render
-    // This improves perceived performance by avoiding blocking the main thread
-    const timer = setTimeout(() => {
-      const authData = getAuthData();
-      setState(authData);
-    }, 0);
-    
-    return () => clearTimeout(timer);
+    const authData = getAuthData();
+    setState(authData);
   }, [getAuthData]);
   
   // Memoize common derived values

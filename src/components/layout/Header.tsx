@@ -11,7 +11,7 @@ interface HeaderProps {
 }
 
 const Header = ({ className }: HeaderProps) => {
-  const { isAuthenticated } = useAdminAuth();
+  const { isAuthenticated, isAdmin } = useAdminAuth();
   const navigate = useNavigate();
   
   const handleDashboardClick = useCallback((e: React.MouseEvent) => {
@@ -28,6 +28,8 @@ const Header = ({ className }: HeaderProps) => {
     }
   }, [isAuthenticated, navigate]);
   
+  const dashboardLink = isAdmin ? "/admin/dashboard" : "/dashboard";
+  
   const headerClass = useMemo(() => cn(
     "sticky top-0 z-10 flex items-center justify-between p-4 bg-background/80 backdrop-blur-sm border-b h-[72px]",
     className
@@ -41,7 +43,7 @@ const Header = ({ className }: HeaderProps) => {
       
       <div className="flex items-center gap-2">
         <Button asChild variant="ghost" size="sm" onClick={handleDashboardClick}>
-          <Link to="/dashboard">
+          <Link to={dashboardLink}>
             <LayoutDashboard className="h-4 w-4 mr-2" />
             Dashboard
           </Link>

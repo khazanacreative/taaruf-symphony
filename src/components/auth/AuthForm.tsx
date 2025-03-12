@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { Link } from 'react-router-dom';
 
 interface AuthFormProps {
   type: 'login' | 'register';
@@ -246,17 +247,57 @@ const AuthForm = ({ type }: AuthFormProps) => {
       {type === 'login' ? (
         <p className="text-sm text-center text-foreground/70">
           Belum punya akun?{' '}
-          <a href="/register" className="text-taaruf-blue hover:underline">
+          <Link to="/register" className="text-taaruf-blue hover:underline">
             Daftar sekarang
-          </a>
+          </Link>
         </p>
       ) : (
         <p className="text-sm text-center text-foreground/70">
           Sudah punya akun?{' '}
-          <a href="/login" className="text-taaruf-blue hover:underline">
+          <Link to="/login" className="text-taaruf-blue hover:underline">
             Masuk
-          </a>
+          </Link>
         </p>
+      )}
+      
+      {type === 'login' && (
+        <div className="border-t pt-4 mt-4">
+          <p className="text-xs text-center text-muted-foreground mb-3">
+            Demo Login:
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            <Button 
+              type="button" 
+              variant="outline" 
+              size="sm"
+              className="text-xs"
+              onClick={() => {
+                setFormData({
+                  ...formData,
+                  email: 'user@example.com',
+                  password: 'password'
+                });
+              }}
+            >
+              User Demo
+            </Button>
+            <Button 
+              type="button" 
+              variant="outline" 
+              size="sm"
+              className="text-xs"
+              onClick={() => {
+                setFormData({
+                  ...formData,
+                  email: 'admin@example.com', 
+                  password: 'admin'
+                });
+              }}
+            >
+              Admin Demo
+            </Button>
+          </div>
+        </div>
       )}
     </form>
   );
