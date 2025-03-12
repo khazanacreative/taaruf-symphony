@@ -1,23 +1,18 @@
 
-import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CVForm from '@/components/profile/CVForm';
 import AppLayout from '@/components/layout/AppLayout';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 const Profile = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState('');
+  const { isAuthenticated, userRole, isLoading } = useAdminAuth();
   
-  useEffect(() => {
-    const authData = localStorage.getItem('taaruf_auth');
-    if (authData) {
-      const { isAuthenticated, role } = JSON.parse(authData);
-      setIsAuthenticated(isAuthenticated);
-      setUserRole(role);
-    }
-  }, []);
+  // Show loading indicator while checking auth
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
   
   // Redirect to login if not authenticated
   if (!isAuthenticated) {

@@ -9,34 +9,50 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { UserCircle, UserCog } from 'lucide-react';
 
 const Login = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    userRole: '',
+    isLoading: true
+  });
   
   useEffect(() => {
+    // This effect should only run once on component mount
     const authData = localStorage.getItem('taaruf_auth');
     if (authData) {
       try {
         const parsedData = JSON.parse(authData);
-        setIsAuthenticated(parsedData.isAuthenticated || false);
-        setUserRole(parsedData.role || '');
+        setAuthState({
+          isAuthenticated: parsedData.isAuthenticated || false,
+          userRole: parsedData.role || '',
+          isLoading: false
+        });
       } catch (error) {
         console.error('Error parsing auth data:', error);
         localStorage.removeItem('taaruf_auth');
+        setAuthState({
+          isAuthenticated: false,
+          userRole: '',
+          isLoading: false
+        });
       }
+    } else {
+      setAuthState({
+        isAuthenticated: false,
+        userRole: '',
+        isLoading: false
+      });
     }
-    setIsLoading(false);
   }, []);
 
   // Show loading state
-  if (isLoading) {
+  if (authState.isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
   // If already authenticated, redirect to dashboard
-  if (isAuthenticated) {
+  if (authState.isAuthenticated) {
     // Redirect admin to admin dashboard
-    if (userRole === 'admin') {
+    if (authState.userRole === 'admin') {
       return <Navigate to="/admin/dashboard" replace />;
     }
     // Redirect regular users to user dashboard

@@ -2,30 +2,39 @@
 import { useState, useEffect } from 'react';
 
 export const useAdminAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [state, setState] = useState({
+    isAuthenticated: false,
+    userRole: '',
+    isLoading: true,
+    isAdmin: false
+  });
   
   useEffect(() => {
     const authData = localStorage.getItem('taaruf_auth');
     if (authData) {
       try {
         const parsedData = JSON.parse(authData);
-        setIsAuthenticated(parsedData.isAuthenticated || false);
-        setUserRole(parsedData.role || '');
+        setState({
+          isAuthenticated: parsedData.isAuthenticated || false,
+          userRole: parsedData.role || '',
+          isLoading: false,
+          isAdmin: (parsedData.role || '') === 'admin'
+        });
       } catch (error) {
         console.error('Error parsing auth data:', error);
         // Reset auth data if it's invalid
         localStorage.removeItem('taaruf_auth');
+        setState({
+          isAuthenticated: false,
+          userRole: '',
+          isLoading: false,
+          isAdmin: false
+        });
       }
+    } else {
+      setState(prev => ({...prev, isLoading: false}));
     }
-    setIsLoading(false);
   }, []);
   
-  return {
-    isAuthenticated,
-    userRole,
-    isLoading,
-    isAdmin: userRole === 'admin'
-  };
+  return state;
 };

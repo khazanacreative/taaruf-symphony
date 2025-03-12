@@ -7,14 +7,16 @@ const Logout = () => {
   const { toast } = useToast();
   
   useEffect(() => {
-    // Clear auth data from localStorage
+    // Clear auth data from localStorage immediately
     localStorage.removeItem('taaruf_auth');
     
-    // Show success toast
-    toast({
-      title: 'Berhasil keluar',
-      description: 'Anda telah keluar dari akun Anda.',
-    });
+    // Show success toast after the redirect
+    setTimeout(() => {
+      toast({
+        title: "Berhasil keluar",
+        description: "Anda telah keluar dari akun Anda.",
+      });
+    }, 100);
   }, [toast]);
   
   // Redirect to login page immediately
