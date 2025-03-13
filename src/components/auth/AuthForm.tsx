@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 interface AuthFormProps {
   type: 'login' | 'register';
@@ -13,6 +13,7 @@ interface AuthFormProps {
 const AuthForm = ({ type }: AuthFormProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { refresh } = useAdminAuth();
   const [isLoading, setIsLoading] = useState(false);
   
   // State untuk form fields
@@ -60,7 +61,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
       }
     }
     
-    // Simulasi request ke server
+    // Simulasi request ke server (reduced timeout for faster response)
     setTimeout(() => {
       // Check if logging in with demo admin account
       const isAdmin = formData.email === 'admin@example.com' && formData.password === 'admin';
@@ -91,11 +92,14 @@ const AuthForm = ({ type }: AuthFormProps) => {
           description: `Selamat datang kembali di Taaruf Ar Rahman${isAdmin ? ' sebagai Admin' : ''}.`
         });
         
-        // Redirect based on role
+        // Refresh auth state
+        refresh();
+        
+        // Redirect based on role - immediate redirect
         if (isAdmin) {
-          navigate('/admin/dashboard');
+          navigate('/admin/dashboard', { replace: true });
         } else {
-          navigate('/dashboard');
+          navigate('/dashboard', { replace: true });
         }
       } else if (type === 'register') {
         // Handle registration
@@ -115,7 +119,11 @@ const AuthForm = ({ type }: AuthFormProps) => {
           description: "Akun Anda telah dibuat. Silakan lengkapi profil Anda."
         });
         
-        navigate('/dashboard');
+        // Refresh auth state
+        refresh();
+        
+        // Immediate redirect
+        navigate('/dashboard', { replace: true });
       } else {
         // Login failed
         toast({
@@ -123,10 +131,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
           description: "Email atau kata sandi tidak valid.",
           variant: "destructive"
         });
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
-    }, 1500);
+    }, 500); // Reduced timeout for faster response
   };
   
   return (

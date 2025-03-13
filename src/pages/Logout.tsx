@@ -22,12 +22,12 @@ const Logout = () => {
       description: "Anda telah keluar dari akun Anda.",
     });
     
-    // Navigate to login page
+    // Immediately navigate to login page
     navigate('/login', { replace: true });
-  }, [toast, navigate, refresh]);
+  }, []);
   
-  // Show minimal loading state while handling logout
-  return <div className="flex items-center justify-center min-h-screen">Logging out...</div>;
+  // This should not be visible as we navigate immediately
+  return null;
 };
 
 export default Logout;

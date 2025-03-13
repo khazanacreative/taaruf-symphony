@@ -52,7 +52,7 @@ export const useAdminAuth = () => {
   
   // Memoize common derived values
   const isParticipant = useMemo(() => 
-    state.isAuthenticated && state.userRole === 'participant',
+    state.isAuthenticated && state.userRole === 'user',
     [state.isAuthenticated, state.userRole]
   );
   

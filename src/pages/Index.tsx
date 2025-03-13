@@ -1,15 +1,33 @@
 
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Heart, MessageSquare, Users, Search } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 const Index = () => {
+  const { isAuthenticated, userRole } = useAdminAuth();
+  const navigate = useNavigate();
   const featuresRef = useRef<HTMLDivElement>(null);
+  
   const scrollToFeatures = () => {
     featuresRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleStartJourney = () => {
+    if (isAuthenticated) {
+      // If user is already logged in, redirect to their dashboard
+      if (userRole === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
+    } else {
+      // If not logged in, redirect to register page
+      navigate('/register');
+    }
   };
 
   return (
@@ -133,12 +151,20 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90">
-                <Link to="/register">Buat Akun</Link>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90"
+                onClick={handleStartJourney}
+              >
+                Buat Akun
               </Button>
               
-              <Button asChild variant="outline" size="lg">
-                <Link to="/login">Sudah Punya Akun</Link>
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => navigate('/login')}
+              >
+                Sudah Punya Akun
               </Button>
             </div>
           </div>

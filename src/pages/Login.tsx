@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AuthForm from '@/components/auth/AuthForm';
 import Header from '@/components/layout/Header';
@@ -13,8 +13,11 @@ const Login = () => {
   const { isAuthenticated, userRole, isLoading, refresh } = useAdminAuth();
   const navigate = useNavigate();
   
-  // Only check authentication status once when component mounts
+  // Check authentication status once when component mounts
   useEffect(() => {
+    // Immediately refresh auth state to get latest status
+    refresh();
+    
     // Redirect if already authenticated
     if (isAuthenticated && !isLoading) {
       if (userRole === 'admin') {
@@ -23,14 +26,13 @@ const Login = () => {
         navigate('/dashboard', { replace: true });
       }
     }
-  }, [isAuthenticated, isLoading, userRole, navigate]);
+  }, [isAuthenticated, isLoading, userRole, navigate, refresh]);
 
   // Show loading state
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
-  // Don't use Navigate component which can cause infinite loops
   // Only show the login form if not authenticated
   if (!isAuthenticated) {
     return (
@@ -82,7 +84,18 @@ const Login = () => {
     );
   }
   
-  // Return null to avoid any rendering if we're just waiting for redirect
+  // If authenticated, redirect to the appropriate dashboard
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (userRole === 'admin') {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [isAuthenticated, userRole, navigate]);
+  
+  // Return null while waiting for redirect
   return null;
 };
 
