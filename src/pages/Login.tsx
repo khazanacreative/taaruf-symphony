@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AuthForm from '@/components/auth/AuthForm';
 import Header from '@/components/layout/Header';
@@ -15,10 +15,7 @@ const Login = () => {
   
   // Check authentication status once when component mounts
   useEffect(() => {
-    // Immediately refresh auth state to get latest status
-    refresh();
-    
-    // Redirect if already authenticated
+    // If already authenticated, redirect to the appropriate dashboard
     if (isAuthenticated && !isLoading) {
       if (userRole === 'admin') {
         navigate('/admin/dashboard', { replace: true });
@@ -26,14 +23,15 @@ const Login = () => {
         navigate('/dashboard', { replace: true });
       }
     }
-  }, [isAuthenticated, isLoading, userRole, navigate, refresh]);
+  }, [isAuthenticated, isLoading, userRole, navigate]);
 
   // Show loading state
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
-  // Only show the login form if not authenticated
+  // If authenticated, we'll handle the redirect through the useEffect hook
+  // If not authenticated, show login form
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col min-h-screen">
@@ -84,19 +82,8 @@ const Login = () => {
     );
   }
   
-  // If authenticated, redirect to the appropriate dashboard
-  useEffect(() => {
-    if (isAuthenticated) {
-      if (userRole === 'admin') {
-        navigate('/admin/dashboard', { replace: true });
-      } else {
-        navigate('/dashboard', { replace: true });
-      }
-    }
-  }, [isAuthenticated, userRole, navigate]);
-  
-  // Return null while waiting for redirect
-  return null;
+  // This is a fallback to ensure redirection if the useEffect doesn't handle it
+  return <Navigate to={userRole === 'admin' ? '/admin/dashboard' : '/dashboard'} />;
 };
 
 export default Login;

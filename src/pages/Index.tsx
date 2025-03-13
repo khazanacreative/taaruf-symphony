@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -55,11 +54,13 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90">
-                <Link to="/register">
-                  <Heart className="mr-2 h-5 w-5" />
-                  Mulai Perjalanan
-                </Link>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-taaruf-blue to-taaruf-green text-white hover:opacity-90"
+                onClick={handleStartJourney}
+              >
+                <Heart className="mr-2 h-5 w-5" />
+                Mulai Perjalanan
               </Button>
               
               <Button 

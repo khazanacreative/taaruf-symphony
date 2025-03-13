@@ -24,9 +24,9 @@ const Logout = () => {
     
     // Immediately navigate to login page
     navigate('/login', { replace: true });
-  }, []);
+  }, [navigate, refresh, toast]);
   
-  // This should not be visible as we navigate immediately
+  // Return null as this component shouldn't render anything
   return null;
 };
 

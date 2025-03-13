@@ -18,22 +18,16 @@ import {
   Activity
 } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState('');
+  const { isAuthenticated, userRole, isLoading } = useAdminAuth();
   
-  useEffect(() => {
-    const authData = localStorage.getItem('taaruf_auth');
-    if (authData) {
-      const { isAuthenticated, role } = JSON.parse(authData);
-      setIsAuthenticated(isAuthenticated);
-      setUserRole(role);
-    }
-  }, []);
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
   
-  // Redirect to login if not authenticated or if not admin
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
@@ -42,7 +36,6 @@ const AdminDashboard = () => {
     return <Navigate to="/dashboard" />;
   }
   
-  // Mock data for admin dashboard
   const stats = {
     totalUsers: 1250,
     newUsers: 47,
@@ -55,7 +48,6 @@ const AdminDashboard = () => {
     revenueChange: -5
   };
   
-  // Mock data for recent activities
   const recentActivities = [
     {
       id: 1,
